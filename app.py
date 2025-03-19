@@ -76,7 +76,7 @@ def get_conversational_chain():
         Question:
         {question}
         
-        Detailed Answer:
+        **Detailed Answer:**
         """,
         input_variables=["context", "question"],
     )
@@ -89,12 +89,16 @@ def user_input(user_question):
     docs = new_db.similarity_search(user_question, k=5)  # Fetch top 5 relevant chunks
     
     if not docs:
-        st.write("Response: The answer is not available in the provided document.")
+        st.write("**Response:** The answer is not available in the provided document.")
         return
     
     chain = get_conversational_chain()
     response = chain({"input_documents": docs, "question": user_question}, return_only_outputs=True)
-    st.write("Response:", response["output_text"])
+    
+    st.markdown("**Response:**")
+    for line in response["output_text"].split("\n"):
+        if line.strip():
+            st.markdown(f"- **{line.strip()}**")
 
 def main():
     st.set_page_config("Chat PDF")
