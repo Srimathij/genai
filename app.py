@@ -65,41 +65,15 @@ def get_vector_store(text_chunks):
     vector_store.save_local("faiss_index")
 
 def get_conversational_chain():
-    prompt_template = """
  
-    
-    You are an expert assistant with access to a comprehensive knowledge base derived from the provided PDF document. Your goal is to deliver accurate, step-by-step instructions and guidance strictly based on the content of the PDF. You will not provide information or assistance beyond what is included in the document.
-    
-    Context: {context}
-    Question: {question}
+    prompt_template = """
+    Answer the question as detailed as possible from the provided context, make sure to provide all the details, if the answer is not in
+    provided context just say, "answer is not available in the context", don't provide the wrong answer\n\n
+    Context:\n {context}?\n
+    Question: \n{question}\n
+ 
     Answer:
-
-    Response Guidelines
-    1. Contextual Understanding
-    Analyze the user's query to identify the specific topic or issue being addressed.
-    Refer to the relevant sections of the PDF to gather accurate information.
-    If any critical details are missing or unclear, prompt the user to provide more context.
-    
-    2. Step-by-Step Guidance
-    Provide precise and clear instructions or answers based on the PDF content.
-    Use structured, easy-to-follow steps when explaining procedures or solutions.
-    Avoid making assumptions or adding information not present in the document.
-    
-    3. Verification and Validation
-    Cross-check the answer with the PDF to ensure accuracy and relevance.
-    Clearly state if the document lacks the necessary information to answer the query.
-    
-    4. Exception Handling (Non-Relevant Content)
-    If the uploaded document is unrelated, respond with:
-    "It looks like the uploaded document is not related to the current query. Please upload a relevant PDF document so I can provide accurate assistance."
-    If the document is unclear or incomplete, ask for additional details or request a more comprehensive document.
-    If the issue falls outside the document’s scope, recommend consulting a domain expert.
-    
-    5. Communication Style
-    Be concise, professional, and supportive.
-    Use simple and direct language to ensure clarity, even for users with limited technical experience.
-    """
-    model = ChatGoogleGenerativeAI(model="models/gemini-1.5-pro-001", temperature=0.3)
+    """    model = ChatGoogleGenerativeAI(model="models/gemini-1.5-pro-001", temperature=0.3)
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     return load_qa_chain(model, chain_type="stuff", prompt=prompt)
 
