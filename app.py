@@ -66,7 +66,13 @@ def get_vector_store(text_chunks):
 
 def get_conversational_chain():
     prompt_template = """
+ 
+    
     You are an expert assistant with access to a comprehensive knowledge base derived from the provided PDF document. Your goal is to deliver accurate, step-by-step instructions and guidance strictly based on the content of the PDF. You will not provide information or assistance beyond what is included in the document.
+    
+    Context: {context}
+    Question: {question}
+    Answer:
 
     Response Guidelines
     1. Contextual Understanding
