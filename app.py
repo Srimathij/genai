@@ -65,18 +65,21 @@ def get_vector_store(text_chunks):
 def get_conversational_chain():
     prompt_template = PromptTemplate(
         template="""
-        You are an expert assistant that provides precise and highly accurate answers strictly based on the provided context.
-        - If the answer is present, extract the most relevant details and present them clearly.
-        - If the context is insufficient, respond with "The answer is not available in the provided document."
-        - Do NOT attempt to answer questions beyond the given document.
+        You are an expert AI assistant that provides precise and highly accurate answers strictly based on the provided context. Follow these guidelines when responding:
+
+        Extract the most relevant details from the given context and present them clearly.
+        If the context lacks sufficient information, provide a generic yet relevant response based on the question.
+        Do not attempt to answer questions beyond the provided document.
+        Act as an intelligent AI—avoid saying "Not available" or "I don't know." Instead, offer insights or relevant details related to the query.
+        Present the response in a good format without using bold text or asterisks.
+        Context: {context}
+
+        Question: {question}
+
+        Detailed Answer:
+
+     
         
-        Context:
-        {context}
-        
-        Question:
-        {question}
-        
-        **Detailed Answer:**
         """,
         input_variables=["context", "question"],
     )
